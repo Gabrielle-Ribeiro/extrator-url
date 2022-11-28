@@ -1,30 +1,20 @@
-# url = "https://bytebank.com/cambio?moedaDestino=dolar&moedaOrigem=real&quantidade=100"
-url = "   "
+from extrator_url import ExtratorURL
 
-# Sanitização da URL
-url = url.strip()
+print("CONVERSOR DE MOEDA")
 
-# Validação da URL
-if url == "":
-    raise ValueError("A URL está vazia")
+url = "bytebank.com/cambio?quantidade=100&moedaOrigem=dolar&moedaDestino=real"
+extrator_url = ExtratorURL(url)
 
-# Separa base e os parâmetros
-indice_interrogacao = url.find('?')
-url_base = url[:indice_interrogacao]
-print(url_base)
+VALOR_DOLAR = 5.50  # 1 dólar = 5.50 reais
+moeda_origem = extrator_url.get_valor_parametro("moedaOrigem")
+moeda_destino = extrator_url.get_valor_parametro("moedaDestino")
+quantidade = float(extrator_url.get_valor_parametro("quantidade"))
 
-url_parametros = url[indice_interrogacao+1:]
-print(url_parametros)
-
-# Busca valor de um parâmetro
-parametro_busca = 'quantidade'
-indice_parametro = url_parametros.find(parametro_busca)
-indice_valor = indice_parametro + len(parametro_busca) + 1
-indice_e_comercial = url_parametros.find('&', indice_valor)
-
-if indice_e_comercial == -1:
-    valor = url_parametros[indice_valor:]
+if moeda_origem == "real" and moeda_destino == "dolar":
+    valor_convertido = quantidade/VALOR_DOLAR
+    print('R$', quantidade, 'são $', valor_convertido)
+elif moeda_origem == "dolar" and moeda_destino == "real":
+    valor_convertido = quantidade*VALOR_DOLAR
+    print('$', quantidade, 'são R$', valor_convertido)
 else:
-    valor = url_parametros[indice_valor:indice_e_comercial]
-
-print(valor)
+    print(f"Câmbio de {moeda_origem} para {moeda_destino} não está disponível.")
