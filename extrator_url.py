@@ -45,9 +45,13 @@ class ExtratorURL:
     def __len__(self):
         return len(self.url)
 
+    def __str__(self):
+        return self.url + "\nParâmetros: " + self.get_url_parametros() + "\nURL Base: " + self.get_url_base()
+
 
 
 extrator_url = ExtratorURL("https://bytebank.com/cambio?moedaDestino=dolar&moedaOrigem=real&quantidade=100")
 valor_quantidade = extrator_url.get_valor_parametro('quantidade')
 print('O tamanho da URL é:', len(extrator_url))
+print(extrator_url)
 print(valor_quantidade)
